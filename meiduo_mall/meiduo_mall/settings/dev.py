@@ -201,3 +201,8 @@ LOGGING = {
 # logger.error('Error Message')
 # logger.debug('Debug Message')
 
+# DRF框架设置
+REST_FRAMEWORK = {
+    # 异常处理
+    'EXCEPTION_HANDLER': 'utils.exceptions.exception_handler',
+}
