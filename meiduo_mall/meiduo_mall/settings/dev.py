@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'rest_framework',
 
     'users.apps.UsersConfig',
-    'verifications.app.VerificationsConfig',
+    'verifications.apps.VerificationsConfig',
 ]
 
 MIDDLEWARE = [
@@ -148,8 +148,24 @@ CACHES = {
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
+    },
+    # 存储短信验证码的内容
+    "verify_codes": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://192.168.220.130:6379/2",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
     }
 }
+
+
+# from redis import StrictRedis
+# redis_conn = StrictRedis(host='192.168.220.130', port=6379, db=2)
+
+# from django_redis import get_redis_connection
+# redis_conn = get_redis_connection('verify_codes')  # StrictRedis对象
+
 # django的session存储设置:把session存储缓存中, 因为缓存已经设置为了redis,所以session就存储到redis中
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 # session存储到缓存空间的名称
