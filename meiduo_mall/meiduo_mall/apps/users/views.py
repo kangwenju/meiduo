@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from rest_framework import status
-from rest_framework.generics import GenericAPIView
+from rest_framework.generics import GenericAPIView, CreateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.mixins import CreateModelMixin
+
 from users.models import User
 from users.serializers import UserSerializer
 # Create your views here.
@@ -10,26 +12,26 @@ from users.serializers import UserSerializer
 # POST /users/
 
 
-class UserView(GenericAPIView):
+class UserView(CreateAPIView):
     # 指定视图所使用的序列化器类
     serializer_class = UserSerializer
 
-    def post(self, request):
-        """
-        注册用户信息的保存；
-        1.获取参数并进行校验(参数完整性, 是否同意协议， 手机号格式, 手机号是否存在, 两次密码是否一致, 短信验证码是否正确)
-        2.创建新用户并保存到数据库
-        3.注册成功, 将新用户序列化并返回
-        """
-        # 1.获取参数并进行校验(参数完整性, 是否同意协议， 手机号格式, 手机号是否存在, 两次密码是否一致, 短信验证码是否正确)
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-
-        # 2.创建新用户并保存到数据库(create)
-        serializer.save()
-
-        # 3.注册成功, 将新用户序列化并返回
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    # def post(self, request):
+    #     """
+    #     注册用户信息的保存；
+    #     1.获取参数并进行校验(参数完整性, 是否同意协议， 手机号格式, 手机号是否存在, 两次密码是否一致, 短信验证码是否正确)
+    #     2.创建新用户并保存到数据库
+    #     3.注册成功, 将新用户序列化并返回
+    #     """
+    #     # 1.获取参数并进行校验(参数完整性, 是否同意协议， 手机号格式, 手机号是否存在, 两次密码是否一致, 短信验证码是否正确)
+    #     serializer = self.get_serializer(data=request.data)
+    #     serializer.is_valid(raise_exception=True)
+    #
+    #     # 2.创建新用户并保存到数据库(create)
+    #     serializer.save()
+    #
+    #     # 3.注册成功, 将新用户序列化并返回
+    #     return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 # GET /users/usernames/(?P<username>\w{5,20})/count/
