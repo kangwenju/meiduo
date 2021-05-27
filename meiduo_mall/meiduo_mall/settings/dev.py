@@ -14,6 +14,8 @@ import os
 import sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import datetime
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # 将apps添加到搜索包目录列表中
@@ -224,6 +226,14 @@ LOGGING = {
 REST_FRAMEWORK = {
     # 异常处理
     'EXCEPTION_HANDLER': 'meiduo_mall.utils.exceptions.exception_handler',
+    # 认证机制设置
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        # 引入JWT认证机制，之后如果客户端传递了jwt token给服务器，此认证机制会对jwt token
+        # 进行验证，如果验证失败，会直接返回401（未认证）
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
 }
 
 # 设置django框架认证系统所使用的模型类
@@ -236,3 +246,9 @@ CORS_ORIGIN_WHITELIST = (
     'www.meiduo.site:8080'
 )
 CORS_ALLOW_CREDENTIALS = True  # 允许携带cookie
+
+# JWT扩展设置
+JWT_AUTH = {
+    # 设置jwt token的有效时间
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),
+}
