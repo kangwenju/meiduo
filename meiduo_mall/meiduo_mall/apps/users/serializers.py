@@ -36,6 +36,13 @@ class UserSerializer(serializers.ModelSerializer):
             }
         }
 
+    def validate_username(self, value):
+        # 用户名不能全部为数字
+        if re.match('^\d+$', value):
+            raise serializers.ValidationError('用户名不能全部为数字')
+
+        return value
+
     def validate_allow(self, value):
         # 是否同意协议
         if value != 'true':

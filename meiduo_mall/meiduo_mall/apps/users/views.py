@@ -23,7 +23,7 @@ class UserView(CreateAPIView):
     #     2.创建新用户并保存到数据库
     #     3.注册成功, 将新用户序列化并返回
     #     """
-    #     # 1.获取参数并进行校验(参数完整性, 是否同意协议， 手机号格式, 手机号是否存在, 两次密码是否一致, 短信验证码是否正确)
+    #     # 1.获取参数并进行校验(参数完整性, 用户名不能全部是数字, 是否同意协议， 手机号格式, 手机号是否存在, 两次密码是否一致, 短信验证码是否正确)
     #     serializer = self.get_serializer(data=request.data)
     #     serializer.is_valid(raise_exception=True)
     #
