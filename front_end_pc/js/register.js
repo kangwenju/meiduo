@@ -182,16 +182,23 @@ var vm = new Vue({
                     responseType: 'json'
                 })
                     .then(response => {
-                        // 保存后端返回的token数据
+                        // 保存登陆用户信息
+                        sessionStorage.clear();
+                        localStorage.clear();
+                        // 保存jwt token
                         localStorage.token = response.data.token;
-                        localStorage.username = response.data.username;
                         localStorage.user_id = response.data.id;
-
+                        localStorage.username = response.data.username;
+                        // 跳转到首页
                         location.href = '/index.html';
                     })
-                    .catch(error => {
+                    .catch(error=> {
                         if (error.response.status == 400) {
-                            this.error_sms_code_message = '短信验证码错误';
+                            if ('non_field_errors' in error.response.data) {
+                                this.error_sms_code_message = error.response.data.non_field_errors[0];
+                            } else {
+                                this.error_sms_code_message = '数据有误';
+                            }
                             this.error_sms_code = true;
                         } else {
                             console.log(error.response.data);
